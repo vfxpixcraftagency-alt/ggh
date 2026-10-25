@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b2545" />
+<title>Staff Portal • PM SHRI MGGS Baya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script>
+  try {
+    var t = localStorage.getItem("sp_theme");
+    if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {}
+</script>
+<style>
+:root{
+  --navy-900:#081a33;--navy-800:#0b2545;--navy-700:#13315c;--navy-600:#1d4e89;--navy-100:#e7eef9;
+  --saffron:#ff9933;--green:#138808;--red:#c62828;--amber:#b26a00;
+  --bg:#f4f6fb;--surface:#fff;--surface-2:#eef2f8;--surface-3:#e4ebf5;
+  --text:#10233f;--muted:#5f6f86;--border:#e2e8f2;
+  --shadow-sm:0 1px 2px rgba(8,26,51,.05),0 1px 3px rgba(8,26,51,.06);
+  --shadow-md:0 8px 24px rgba(8,26,51,.08);--shadow-lg:0 18px 48px rgba(8,26,51,.14);
+  --radius-sm:10px;--radius:16px;--radius-lg:22px;
+  --font:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --header-h:64px;--bottom-h:70px;
+}
+[data-theme="dark"]{
+  --bg:#07111f;--surface:#0d1b2e;--surface-2:#12233a;--surface-3:#182c46;
+  --text:#e8eef7;--muted:#93a4bd;--border:#1d3350;--navy-100:#12233a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 8px 24px rgba(0,0,0,.35);--shadow-lg:0 18px 48px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100dvh;font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+img{max-width:100%;display:block}
+h1,h2,h3,h4,p{margin:0}
+:focus-visible{outline:3px solid rgba(29,78,137,.35);outline-offset:2px}
+.muted{color:var(--muted)}.small{font-size:.82rem}.center{text-align:center}
+
+/* Auth screen */
+.auth-screen{min-height:100dvh;display:grid;place-items:center;padding:24px;
+  background:radial-gradient(circle at 30% 20%,rgba(255,153,51,.08),transparent 50%),
+             radial-gradient(circle at 70% 80%,rgba(19,136,8,.06),transparent 50%),var(--bg)}
+.auth-card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:32px 28px}
+.auth-emblem{width:64px;height:64px;margin:0 auto 18px;display:block}
+.auth-card h1{font-size:1.15rem;letter-spacing:-.02em;line-height:1.35;text-align:center}
+.auth-card .sub{font-size:.78rem;color:var(--muted);margin-top:6px;margin-bottom:24px;text-align:center}
+.auth-tabs{display:flex;gap:6px;margin-bottom:22px;background:var(--surface-2);padding:4px;border-radius:12px}
+.auth-tab{flex:1;padding:9px;border:0;border-radius:9px;background:transparent;color:var(--muted);
+  font-weight:700;font-size:.82rem;transition:background .18s,color .18s}
+.auth-tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
+.auth-note{font-size:.7rem;color:var(--muted);margin-top:18px;line-height:1.5;text-align:center}
+.auth-error{margin:0 0 14px;padding:10px 12px;border-radius:var(--radius-sm);
+  background:rgba(198,40,40,.08);border:1px solid rgba(198,40,40,.22);color:var(--red);
+  font-size:.8rem;font-weight:600;text-align:left;line-height:1.45}
+.auth-info{margin:0 0 14px;padding:10px 12px;border-radius:var(--radius-sm);
+  background:rgba(19,136,8,.08);border:1px solid rgba(19,136,8,.22);color:#0e6b06;
+  font-size:.8rem;font-weight:600;text-align:left;line-height:1.45}
+.auth-switch{text-align:center;font-size:.78rem;color:var(--muted);margin-top:16px}
+.auth-switch button{border:0;background:transparent;color:var(--navy-600);font-weight:700;padding:0;font-size:inherit}
+
+/* App shell */
+.app{min-height:100dvh;padding-bottom:calc(var(--bottom-h) + env(safe-area-inset-bottom) + 12px)}
+.app-header{position:sticky;top:0;z-index:40;height:var(--header-h);display:flex;align-items:center;
+  justify-content:space-between;gap:12px;padding:0 16px;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.app-header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+  background:linear-gradient(90deg,var(--saffron),#fff 50%,var(--green));opacity:.8}
+.app-header__brand{display:flex;align-items:center;gap:10px;min-width:0}
+.emblem-sm{width:36px;height:36px;flex:0 0 auto}
+.school-lines{display:flex;flex-direction:column;min-width:0;line-height:1.15}
+.school-lines strong{font-size:.6rem;letter-spacing:.03em;font-weight:800;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;max-width:44vw}
+.school-lines span{font-size:.6rem;letter-spacing:.2em;color:var(--muted);font-weight:700}
+.app-header__actions{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.header-date{display:none;font-size:.78rem;font-weight:600;color:var(--muted);margin-right:4px}
+.icon-btn{position:relative;width:40px;height:40px;display:grid;place-items:center;border:1px solid transparent;
+  border-radius:50%;background:transparent;color:var(--text)}
+.icon-btn:hover{background:var(--surface-2)}
+.icon-btn svg{width:20px;height:20px}
+.dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;
+  background:var(--saffron);border:2px solid var(--surface)}
+.avatar{width:38px;height:38px;border-radius:50%;border:2px solid var(--surface);
+  background:linear-gradient(145deg,var(--navy-700),var(--navy-600));color:#fff;display:grid;
+  place-items:center;font-weight:800;font-size:.78rem;overflow:hidden;flex:0 0 auto;
+  box-shadow:0 0 0 1px var(--border)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar--sm{width:34px;height:34px;font-size:.7rem}
+.sidebar{display:none}
+.page{width:100%;max-width:1120px;margin:0 auto;padding:20px 16px 32px;outline:none}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.greeting{font-size:clamp(1.25rem,4.6vw,1.65rem);letter-spacing:-.025em}
+.date-line{font-size:.8rem;color:var(--muted);margin-top:4px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:24px 0 12px}
+.section-title h3{font-size:.98rem;letter-spacing:-.01em}
+.section-title button{border:0;background:transparent;color:var(--navy-600);font-size:.78rem;font-weight:700}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);padding:18px}
+.grid{display:grid;gap:12px}
+.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+.attendance-hero{position:relative;overflow:hidden;border:1px solid transparent;border-radius:var(--radius-lg);
+  background:radial-gradient(circle at 100% 0,rgba(255,153,51,.16),transparent 38%),
+             linear-gradient(145deg,var(--navy-800),var(--navy-700));
+  color:#fff;padding:22px;box-shadow:0 16px 36px rgba(8,26,51,.22)}
+.attendance-hero::after{content:"";position:absolute;right:-50px;bottom:-70px;width:190px;height:190px;
+  border-radius:50%;border:24px solid rgba(255,255,255,.05)}
+.attendance-hero--done{background:linear-gradient(145deg,#0d3b2e,#0f5132)}
+.attendance-hero--idle{background:linear-gradient(145deg,#3a2410,#5c3a15)}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.hero-label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:700}
+.status-pill{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;
+  border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  font-size:.74rem;font-weight:700}
+.status-pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.status-pill--in{color:#b8f5c7}.status-pill--late{color:#ffd08a}.status-pill--out{color:#d8e6ff}.status-pill--idle{color:#ffd08a}
+.hero-time{margin-top:16px;font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1.1;position:relative;z-index:1}
+.hero-time small{display:block;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.65);margin-top:4px;letter-spacing:.02em}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:.78rem;color:rgba(255,255,255,.78);
+  position:relative;z-index:1}
+.hero-meta strong{color:#fff}
+.hero-actions{display:flex;gap:10px;margin-top:18px;position:relative;z-index:1}
+.hero-actions .btn{flex:1}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:15px;box-shadow:var(--shadow-sm)}
+.stat-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;
+  background:var(--navy-100);color:var(--navy-700);margin-bottom:10px}
+.stat-icon svg{width:18px;height:18px}
+.stat-value{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;line-height:1.2}
+.stat-label{font-size:.74rem;color:var(--muted);margin-top:2px}
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.quick-action{display:flex;align-items:center;gap:11px;text-align:left;padding:14px;
+  border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);
+  color:var(--text);box-shadow:var(--shadow-sm);
+  transition:transform .12s,border-color .18s,box-shadow .18s}
+.quick-action:hover{border-color:var(--navy-600);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.quick-action svg{width:20px;height:20px;color:var(--navy-600);flex:0 0 auto}
+.quick-action strong{display:block;font-size:.82rem}
+.quick-action span{display:block;font-size:.7rem;color:var(--muted);margin-top:1px}
+.notice-list{display:grid;gap:10px}
+.notice-item{width:100%;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:14px;
+  border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);
+  color:var(--text);box-shadow:var(--shadow-sm)}
+.notice-item:hover{border-color:var(--navy-600)}
+.notice-dot{width:9px;height:9px;border-radius:50%;background:var(--saffron);flex:0 0 auto;margin-top:6px}
+.notice-title{font-size:.85rem;font-weight:700;letter-spacing:-.005em}
+.notice-meta{font-size:.7rem;color:var(--muted);margin-top:3px}
+.notice-preview{font-size:.76rem;color:var(--muted);margin-top:5px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.list{display:grid;gap:9px}
+.list-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;
+  border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);
+  box-shadow:var(--shadow-sm)}
+.list-main{min-width:0}
+.list-main strong{display:block;font-size:.84rem}
+.list-main span{display:block;font-size:.73rem;color:var(--muted);margin-top:2px}
+.list-side{text-align:right;flex:0 0 auto}
+.list-side strong{display:block;font-size:.8rem}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;
+  font-size:.68rem;font-weight:800;letter-spacing:.02em;text-transform:capitalize}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge-present{background:rgba(19,136,8,.09);color:#0e6b06}
+.badge-late{background:rgba(178,106,0,.10);color:var(--amber)}
+.badge-pending{background:rgba(178,106,0,.10);color:var(--amber)}
+.badge-approved{background:rgba(19,136,8,.09);color:#0e6b06}
+.badge-rejected{background:rgba(198,40,40,.08);color:var(--red)}
+.badge-leave{background:rgba(29,78,137,.09);color:var(--navy-600)}
+.calendar-card{padding:16px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.cal-head h3{font-size:.95rem}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--border);
+  border-radius:9px;background:var(--surface);color:var(--text)}
+.cal-nav button:hover{background:var(--surface-2)}
+.cal-nav svg{width:16px;height:16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cal-dow{text-align:center;font-size:.64rem;font-weight:800;letter-spacing:.04em;color:var(--muted);
+  padding:4px 0 6px;text-transform:uppercase}
+.cal-day{position:relative;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;border:1px solid transparent;border-radius:10px;
+  background:var(--surface-2);color:var(--text);font-size:.76rem;font-weight:700}
+.cal-day small{font-size:.55rem;font-weight:700;letter-spacing:.02em}
+.cal-day.present{background:rgba(19,136,8,.10);color:#0e6b06;border-color:rgba(19,136,8,.18)}
+.cal-day.late{background:rgba(178,106,0,.10);color:var(--amber);border-color:rgba(178,106,0,.2)}
+.cal-day.leave{background:rgba(29,78,137,.10);color:var(--navy-600);border-color:rgba(29,78,137,.18)}
+.cal-day.is-today{box-shadow:inset 0 0 0 2px var(--navy-600)}
+.cal-day.is-sunday{color:var(--muted);background:transparent}
+.cal-day.is-future{opacity:.45}
+.cal-day.is-outside{visibility:hidden;pointer-events:none}
+.cal-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:.67rem;color:var(--muted)}
+.cal-legend span{display:inline-flex;align-items:center;gap:5px}
+.cal-legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.legend-present{background:rgba(19,136,8,.35)}
+.legend-late{background:rgba(178,106,0,.35)}
+.legend-leave{background:rgba(29,78,137,.35)}
+.field{margin-bottom:16px}
+.field label{display:block;margin-bottom:7px;font-size:.78rem;font-weight:700;letter-spacing:.02em}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface-2);color:var(--text);padding:13px 12px;outline:none;font-size:.88rem;
+  transition:border-color .18s,box-shadow .18s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy-600);
+  box-shadow:0 0 0 3px rgba(29,78,137,.12);background:var(--surface)}
+.field textarea{min-height:100px;resize:vertical}
+.field-hint{font-size:.7rem;color:var(--muted);margin-top:5px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-error{margin:4px 0 14px;padding:10px 12px;border-radius:var(--radius-sm);
+  background:rgba(198,40,40,.08);border:1px solid rgba(198,40,40,.22);color:var(--red);
+  font-size:.82rem;font-weight:600;line-height:1.45}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 20px;
+  border-radius:var(--radius-sm);border:1px solid transparent;font-weight:700;font-size:.9rem;
+  letter-spacing:.01em;transition:transform .12s,box-shadow .18s,background .18s,opacity .18s;user-select:none}
+.btn:active{transform:scale(.985)}
+.btn:disabled{opacity:.62;cursor:not-allowed}
+.btn-block{width:100%}
+.btn-primary{background:var(--navy-800);color:#fff;box-shadow:0 8px 18px rgba(11,37,69,.22)}
+.btn-primary:hover{background:var(--navy-700)}
+.btn-ghost{background:var(--surface-2);color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{background:var(--surface-3)}
+.btn-danger{background:rgba(198,40,40,.08);color:var(--red);border-color:rgba(198,40,40,.22)}
+.btn-danger:hover{background:rgba(198,40,40,.14)}
+.btn-sm{min-height:38px;padding:0 14px;font-size:.82rem;border-radius:9px}
+.empty{text-align:center;padding:34px 18px;border:1px dashed var(--border);border-radius:var(--radius);
+  background:var(--surface);color:var(--muted)}
+.empty svg{width:30px;height:30px;margin:0 auto 10px;opacity:.6}
+.empty strong{display:block;color:var(--text);font-size:.88rem;margin-bottom:4px}
+.empty p{font-size:.78rem;max-width:320px;margin:0 auto}
+.modal-backdrop{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;
+  justify-content:center;background:rgba(4,14,28,.55);backdrop-filter:blur(4px);animation:fadeIn .18s ease both}
+.modal{width:100%;max-width:520px;max-height:88dvh;overflow:auto;background:var(--surface);
+  border:1px solid var(--border);border-radius:20px 20px 0 0;box-shadow:var(--shadow-lg);
+  animation:slideUp .26s cubic-bezier(.2,.8,.2,1) both}
+.modal__head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:18px 20px 10px;position:sticky;top:0;background:var(--surface);z-index:1}
+.modal__head h3{font-size:1.02rem}
+.modal__body{padding:4px 20px 20px}
+.modal__foot{display:flex;gap:10px;padding:0 20px 22px}
+.modal__foot .btn{flex:1}
+.modal-close{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--border);
+  border-radius:50%;background:var(--surface);color:var(--text)}
+.modal-close:hover{background:var(--surface-2)}
+.modal-close svg{width:16px;height:16px}
+.toast-container{position:fixed;left:50%;bottom:calc(var(--bottom-h) + env(safe-area-inset-bottom) + 16px);
+  z-index:300;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;
+  width:min(92vw,420px);pointer-events:none}
+.toast{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;
+  background:var(--navy-800);color:#fff;box-shadow:var(--shadow-lg);font-size:.82rem;font-weight:600;
+  pointer-events:auto;animation:toastIn .24s cubic-bezier(.2,.8,.2,1) both}
+.toast svg{width:17px;height:17px;flex:0 0 auto;margin-top:1px}
+.toast.success{background:#0f5132}.toast.error{background:#8e1f1f}
+.success-overlay{position:fixed;inset:0;z-index:500;display:grid;place-items:center;
+  background:rgba(4,14,28,.35);backdrop-filter:blur(3px);animation:fadeIn .15s ease both}
+.success-overlay.out{opacity:0;transition:opacity .3s}
+.success-overlay svg{width:92px;height:92px}
+.success-overlay .ring{fill:none;stroke:#fff;stroke-width:4;opacity:.25}
+.success-overlay .check{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:70;stroke-dashoffset:70;animation:checkDraw .45s .15s ease forwards}
+.profile-hero{display:flex;align-items:center;gap:16px}
+.profile-avatar{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(145deg,var(--navy-700),var(--navy-600));color:#fff;font-weight:800;
+  font-size:1.3rem;overflow:hidden;flex:0 0 auto;
+  box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--navy-100)}
+.profile-avatar img{width:100%;height:100%;object-fit:cover}
+.profile-hero h2{font-size:1.15rem;letter-spacing:-.02em}
+.profile-hero p{font-size:.8rem;color:var(--muted);margin-top:2px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.detail-item{background:var(--surface);padding:13px 14px}
+.detail-item span{display:block;font-size:.66rem;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.06em;font-weight:700}
+.detail-item strong{display:block;font-size:.84rem;margin-top:3px;word-break:break-word}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:0}
+.toggle-row strong{display:block;font-size:.84rem}
+.toggle-row span{display:block;font-size:.72rem;color:var(--muted);margin-top:2px;max-width:260px}
+.switch{position:relative;width:46px;height:26px;flex:0 0 auto;border:0;border-radius:999px;
+  background:var(--surface-3);transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.switch.on{background:var(--navy-600)}
+.switch.on::after{transform:translateX(20px)}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:stretch;
+  justify-content:space-around;min-height:var(--bottom-h);padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(14px);
+  border-top:1px solid var(--border)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  min-width:0;border:0;background:transparent;color:var(--muted);font-size:.62rem;font-weight:700;
+  letter-spacing:.01em;border-radius:12px;padding:6px 2px;transition:color .18s,background .18s}
+.nav-item svg{width:20px;height:20px}
+.nav-item.active{color:var(--navy-600);background:var(--navy-100)}
+.loading-screen{min-height:100dvh;display:grid;place-items:center;background:var(--bg)}
+.spinner{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--navy-600);
+  border-radius:50%;animation:spin .8s linear infinite}
+@media (min-width:560px){
+  .header-date{display:inline}
+  .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .modal-backdrop{align-items:center;padding:20px}
+  .modal{border-radius:var(--radius-lg)}
+  .toast-container{bottom:24px}
+}
+@media (min-width:960px){
+  .app{padding-left:264px;padding-bottom:0}
+  .app-header{margin-left:264px;padding:0 28px}
+  .sidebar{display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;width:264px;z-index:45;
+    background:var(--surface);border-right:1px solid var(--border);padding:22px 14px}
+  .side-nav{display:flex;flex-direction:column;gap:4px}
+  .side-link{display:flex;align-items:center;gap:11px;min-height:44px;padding:0 13px;border:0;
+    border-radius:11px;background:transparent;color:var(--muted);font-size:.84rem;font-weight:700;
+    text-align:left}
+  .side-link:hover{background:var(--surface-2);color:var(--text)}
+  .side-link.active{background:var(--navy-800);color:#fff}
+  .side-link svg{width:19px;height:19px}
+  .sidebar__user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:13px;
+    border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-2)}
+  .sidebar__user strong{display:block;font-size:.8rem}
+  .sidebar__user span{display:block;font-size:.7rem;color:var(--muted);margin-top:1px}
+  .sidebar__logout{margin-top:8px;width:100%}
+  .bottom-nav{display:none}
+  .page{padding:28px 28px 48px}
+  .greeting{font-size:1.75rem}
+  .toast-container{bottom:24px}
+}
+@media (max-width:380px){
+  .form-row{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes checkDraw{to{stroke-dashoffset:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading-screen" class="loading-screen"><div class="spinner"></div></div>
+
+<!-- Auth -->
+<div id="auth-screen" class="auth-screen" hidden>
+  <div class="auth-card">
+    <svg class="auth-emblem" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="58" fill="#0b2545"/>
+      <path d="M24 60a36 36 0 0 1 72 0" fill="none" stroke="#ff9933" stroke-width="3"/>
+      <path d="M24 64a36 36 0 0 0 72 0" fill="none" stroke="#138808" stroke-width="3"/>
+      <path d="M38 52c9-6 17-6 22 0 5-6 13-6 22 0v26c-9-6-17-6-22 0-5-6-13-6-22 0V52z" fill="#fff"/>
+    </svg>
+    <h1>Staff Portal</h1>
+    <p class="sub">PM SHRI Mahatma Gandhi Government School, Baya</p>
+
+    <div class="auth-tabs" role="tablist">
+      <button id="tab-signin" class="auth-tab active" type="button" role="tab">Sign In</button>
+      <button id="tab-signup" class="auth-tab" type="button" role="tab">Sign Up</button>
+    </div>
+
+    <div id="auth-error" class="auth-error" hidden></div>
+    <div id="auth-info" class="auth-info" hidden></div>
+
+    <form id="auth-form">
+      <div id="name-field" class="field" hidden>
+        <label for="f-name">Full name</label>
+        <input id="f-name" type="text" autocomplete="name" placeholder="e.g. Anita Verma" />
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" type="email" autocomplete="email" placeholder="you@school.edu.in" required />
+      </div>
+      <div class="field">
+        <label for="f-password">Password</label>
+        <input id="f-password" type="password" autocomplete="current-password" placeholder="••••••••" minlength="6" required />
+        <div class="field-hint" id="pw-hint" hidden>At least 6 characters.</div>
+      </div>
+      <button id="auth-submit" class="btn btn-primary btn-block" type="submit">Sign In</button>
+    </form>
+
+    <p class="auth-switch">
+      <span id="switch-prompt">New staff member?</span>
+      <button id="switch-action" type="button">Create an account</button>
+    </p>
+
+    <p class="auth-note">Accounts are restricted to staff registered by the school office. If you were not invited, contact the office.</p>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app-view" class="app" hidden>
+  <header class="app-header">
+    <div class="app-header__brand">
+      <svg class="emblem-sm" viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#0b2545"/>
+        <path d="M24 60a36 36 0 0 1 72 0" fill="none" stroke="#ff9933" stroke-width="3"/>
+        <path d="M24 64a36 36 0 0 0 72 0" fill="none" stroke="#138808" stroke-width="3"/>
+        <path d="M38 52c9-6 17-6 22 0 5-6 13-6 22 0v26c-9-6-17-6-22 0-5-6-13-6-22 0V52z" fill="#fff"/></svg>
+      <div class="school-lines">
+        <strong>PM SHRI MAHATMA GANDHI GOVERNMENT SCHOOL</strong>
+        <span>BAYA</span>
+      </div>
+    </div>
+    <div class="app-header__actions">
+      <span id="header-date" class="header-date"></span>
+      <button id="notif-btn" class="icon-btn" type="button" aria-label="School notices">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button id="avatar-btn" class="avatar" type="button" aria-label="Open profile"><span id="avatar-initials"></span></button>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <nav class="side-nav">
+      <button class="side-link" data-route="dashboard" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span>
+      </button>
+      <button class="side-link" data-route="attendance" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></svg><span>My Attendance</span>
+      </button>
+      <button class="side-link" data-route="leave" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg><span>Leave</span>
+      </button>
+      <button class="side-link" data-route="notices" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Notices</span>
+      </button>
+      <button class="side-link" data-route="profile" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22a8 8 0 0 1 16 0"/></svg><span>My Profile</span>
+      </button>
+    </nav>
+    <div class="sidebar__user">
+      <div class="avatar avatar--sm"><span id="side-avatar-initials"></span></div>
+      <div style="min-width:0"><strong id="side-name">—</strong><span id="side-role">—</span></div>
+    </div>
+    <button id="logout-btn" class="btn btn-ghost btn-sm sidebar__logout" type="button">Sign out</button>
+  </aside>
+
+  <main id="page" class="page" tabindex="-1"></main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" data-route="dashboard" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Home</span>
+    </button>
+    <button class="nav-item" data-route="attendance" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></svg><span>Attendance</span>
+    </button>
+    <button class="nav-item" data-route="leave" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg><span>Leave</span>
+    </button>
+    <button class="nav-item" data-route="notices" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Notices</span>
+    </button>
+    <button class="nav-item" data-route="profile" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22a8 8 0 0 1 16 0"/></svg><span>Profile</span>
+    </button>
+  </nav>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<div id="modal-root"></div>
+
+<!-- Supabase JS (v2) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* ============================================================
+   SUPABASE CONFIG
+   ============================================================
+   ⚠️  SECURITY WARNING
+   These values are PUBLIC in the browser bundle — that is by
+   design. Your data is protected ONLY by Row Level Security
+   (RLS). Before deploying:
+
+     1. Enable RLS on every table (staff, attendance,
+        leave_requests, notices).
+     2. Add the policies from the SQL setup guide.
+     3. Rotate the anon key if it was ever shared publicly
+        (Project Settings → API → JWT Secret → Regenerate).
+
+   NEVER put the service_role key in this file. It bypasses RLS.
+   ============================================================ */
+const SUPABASE_URL = "https://sqhzcaqymuhzidinhvzl.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxaHpjYXF5bXVoemlkaW5odnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5Mzk5MDEsImV4cCI6MjEwODUxNTkwMX0.jzFct4zrECaExmSW0C5J4asW-4aFrb3f6AGbb7BeR0E";
+
+const supa = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* School timing config — 10:00 AM to 4:00 PM */
+const SCHOOL_START_HOUR = 10;   // 10:00 late cutoff
+const SCHOOL_END_HOUR   = 16;   // 16:00 (informational)
+const TZ = "Asia/Kolkata";
+
+/* ---------- Runtime state ---------- */
+let PROFILE = null;
+let NOTICES = [];
+let currentRoute = "dashboard";
+let attView = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let noticesChannel = null;
+let authMode = "signin";
+
+/* ---------- Helpers ---------- */
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+const todayKey = () => {
+  const p = new Intl.DateTimeFormat("en-GB",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+  const g = t => p.find(x => x.type === t)?.value;
+  return `${g("year")}-${g("month")}-${g("day")}`;
+};
+const dateKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const parseD = v => { const [y,m,d]=String(v).split("-").map(Number); return new Date(y,(m||1)-1,d||1); };
+const fmtTime = iso => iso ? new Intl.DateTimeFormat("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true,timeZone:TZ}).format(new Date(iso)) : "—";
+const fmtDate = v => { if(!v) return "—"; const d=/^\d{4}-\d{2}-\d{2}$/.test(v)?parseD(v):new Date(v);
+  return new Intl.DateTimeFormat("en-IN",{day:"numeric",month:"short",year:"numeric"}).format(d); };
+const fmtDateTime = iso => iso ? new Intl.DateTimeFormat("en-IN",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:true,timeZone:TZ}).format(new Date(iso)) : "—";
+const fmtDur = m => { m=Math.max(0,Math.round(m)); if(m<60) return m+"m"; const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`; };
+const minsBetween = (a,b=null) => !a?0:Math.max(0,Math.round(((b?new Date(b):new Date())-new Date(a))/60000));
+const esc = s => String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const initials = name => (name||"").split(" ").filter(Boolean).map(w=>w[0]).join("").slice(0,2).toUpperCase() || "?";
+
+/* ---------- Toast / overlays / modal ---------- */
+function toast(msg, type="info", timeout=4000) {
+  const c = $("#toast-container");
+  const icons = { success:'<path d="M20 6 9 17l-5-5"/>', error:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>', info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>' };
+  const el = document.createElement("div");
+  el.className = "toast " + type;
+  el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${icons[type]||icons.info}</svg><span>${esc(msg)}</span>`;
+  c.appendChild(el);
+  setTimeout(()=>{ el.style.opacity="0"; el.style.transform="translateY(10px)"; el.style.transition="opacity .25s, transform .25s"; setTimeout(()=>el.remove(),260); }, timeout);
+}
+function successOverlay() {
+  const o = document.createElement("div");
+  o.className = "success-overlay";
+  o.innerHTML = `<svg viewBox="0 0 100 100"><circle class="ring" cx="50" cy="50" r="46"/><path class="check" d="M30 52 L45 67 L72 38"/></svg>`;
+  document.body.appendChild(o);
+  setTimeout(()=>{o.classList.add("out");setTimeout(()=>o.remove(),320);},760);
+}
+function openModal(title, body, foot, onMount) {
+  const root = $("#modal-root");
+  root.innerHTML = `<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true">
+    <div class="modal__head"><h3>${esc(title)}</h3>
+      <button class="modal-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal__body">${body}</div>
+    ${foot?`<div class="modal__foot">${foot}</div>`:""}
+  </div></div>`;
+  const close = ()=>root.innerHTML="";
+  root.querySelector(".modal-close").onclick = close;
+  root.querySelector(".modal-backdrop").onclick = e => { if(e.target.classList.contains("modal-backdrop")) close(); };
+  if (onMount) onMount(root, close);
+  return close;
+}
+function currentTheme(){ return document.documentElement.getAttribute("data-theme")||"light"; }
+function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); try{localStorage.setItem("sp_theme",t);}catch{} }
+
+/* ============================================================
+   AUTH — Supabase email/password
+   ============================================================ */
+function setAuthMode(mode) {
+  authMode = mode;
+  $("#tab-signin").classList.toggle("active", mode === "signin");
+  $("#tab-signup").classList.toggle("active", mode === "signup");
+  $("#name-field").hidden = mode === "signin";
+  $("#pw-hint").hidden = mode === "signin";
+  $("#auth-submit").textContent = mode === "signin" ? "Sign In" : "Create Account";
+  $("#switch-prompt").textContent = mode === "signin" ? "New staff member?" : "Already have an account?";
+  $("#switch-action").textContent = mode === "signin" ? "Create an account" : "Sign in";
+  $("#f-password").setAttribute("autocomplete", mode === "signin" ? "current-password" : "new-password");
+  hideAuthAlerts();
+}
+function hideAuthAlerts() {
+  $("#auth-error").hidden = true;
+  $("#auth-info").hidden = true;
+}
+function showAuthError(msg) {
+  const el = $("#auth-error");
+  el.textContent = msg; el.hidden = false;
+  $("#auth-info").hidden = true;
+}
+function showAuthInfo(msg) {
+  const el = $("#auth-info");
+  el.textContent = msg; el.hidden = false;
+  $("#auth-error").hidden = true;
+}
+
+async function handleAuthSubmit(e) {
+  e.preventDefault();
+  hideAuthAlerts();
+  const email = $("#f-email").value.trim().toLowerCase();
+  const password = $("#f-password").value;
+  const name = $("#f-name").value.trim();
+  const submit = $("#auth-submit");
+  submit.disabled = true;
+  const original = submit.textContent;
+  submit.textContent = authMode === "signin" ? "Signing in…" : "Creating account…";
+
+  try {
+    if (authMode === "signin") {
+      const { error } = await supa.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+    } else {
+      if (!name) { showAuthError("Please enter your full name."); return; }
+      const { data, error } = await supa.auth.signUp({ email, password, options: { data: { full_name: name } } });
+      if (error) throw error;
+      if (data.session) {
+        // Logged in immediately
+      } else {
+        showAuthInfo("Account created. Check your email to confirm your address, then sign in.");
+        setAuthMode("signin");
+        $("#f-email").value = email;
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    showAuthError(friendlyAuthError(err));
+  } finally {
+    submit.disabled = false;
+    submit.textContent = original;
+  }
+}
+
+function friendlyAuthError(err) {
+  const msg = (err?.message || "").toLowerCase();
+  if (msg.includes("invalid login")) return "Incorrect email or password.";
+  if (msg.includes("email not confirmed")) return "Please confirm your email address first. Check your inbox.";
+  if (msg.includes("already registered") || msg.includes("user already")) return "This email is already registered. Try signing in.";
+  if (msg.includes("password") && msg.includes("6")) return "Password must be at least 6 characters.";
+  if (msg.includes("rate limit")) return "Too many attempts. Please wait a moment and try again.";
+  return err?.message || "Authentication failed. Please try again.";
+}
+
+async function doSignOut() {
+  if (!confirm("Sign out of the staff portal?")) return;
+  try { await supa.auth.signOut(); } catch (e) { console.error(e); }
+}
+
+/* ---------- Boot based on auth state ---------- */
+async function bootFromSession(session) {
+  const loading = $("#loading-screen");
+  const authScreen = $("#auth-screen");
+  const app = $("#app-view");
+
+  if (!session) {
+    PROFILE = null;
+    NOTICES = [];
+    if (noticesChannel) { supa.removeChannel(noticesChannel); noticesChannel = null; }
+    loading.hidden = true;
+    app.hidden = true;
+    authScreen.hidden = false;
+    return;
+  }
+
+  try {
+    PROFILE = await loadStaffProfile(session.user);
+  } catch (err) {
+    console.error("Profile load failed:", err);
+    await supa.auth.signOut();
+    loading.hidden = true;
+    app.hidden = true;
+    authScreen.hidden = false;
+    showAuthError(err.code === "app/not-staff"
+      ? `The account ${session.user.email} is not registered as staff. Contact the school office.`
+      : "Could not load your staff profile. Please try again.");
+    return;
+  }
+
+  loading.hidden = true;
+  authScreen.hidden = true;
+  app.hidden = false;
+
+  $("#avatar-initials").textContent = initials(PROFILE.full_name);
+  $("#side-avatar-initials").textContent = initials(PROFILE.full_name);
+  $("#side-name").textContent = PROFILE.full_name;
+  $("#side-role").textContent = PROFILE.designation || "Staff";
+
+  await loadNotices();
+  subscribeNotices();
+  navigate("dashboard");
+}
+
+async function loadStaffProfile(user) {
+  const { data, error } = await supa
+    .from("staff")
+    .select("*")
+    .eq("auth_user_id", user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) {
+    const e = new Error("NOT_STAFF");
+    e.code = "app/not-staff";
+    throw e;
+  }
+  return data;
+}
+
+/* ============================================================
+   NOTICES
+   ============================================================ */
+async function loadNotices() {
+  const { data, error } = await supa
+    .from("notices")
+    .select("id,title,body,published_at")
+    .order("published_at", { ascending: false })
+    .limit(50);
+  if (error) { console.error("Notices load error:", error); return; }
+  NOTICES = data || [];
+}
+function subscribeNotices() {
+  if (noticesChannel) supa.removeChannel(noticesChannel);
+  noticesChannel = supa
+    .channel("public:notices")
+    .on("postgres_changes", { event: "*", schema: "public", table: "notices" }, async () => {
+      await loadNotices();
+      if (currentRoute === "dashboard" || currentRoute === "notices") routes[currentRoute]($("#page"));
+    })
+    .subscribe();
+}
+
+/* ============================================================
+   DATA ACCESS
+   ============================================================ */
+async function fetchAttendanceToday() {
+  const { data, error } = await supa
+    .from("attendance")
+    .select("*")
+    .eq("staff_id", PROFILE.id)
+    .eq("attendance_date", todayKey())
+    .maybeSingle();
+  if (error) throw error;
+  return data || null;
+}
+async function fetchAttendanceRange(startKey, endKey) {
+  const { data, error } = await supa
+    .from("attendance")
+    .select("*")
+    .eq("staff_id", PROFILE.id)
+    .gte("attendance_date", startKey)
+    .lte("attendance_date", endKey);
+  if (error) throw error;
+  return data || [];
+}
+async function saveCheckIn(payload) {
+  const { error } = await supa.from("attendance").upsert({
+    staff_id: PROFILE.id,
+    attendance_date: payload.attendance_date,
+    check_in_at: payload.check_in_at,
+    check_out_at: payload.check_out_at,
+    status: payload.status
+  }, { onConflict: "staff_id,attendance_date" });
+  if (error) throw error;
+}
+async function saveCheckOut(attendance_date, check_out_at) {
+  const { error } = await supa.from("attendance")
+    .update({ check_out_at })
+    .eq("staff_id", PROFILE.id)
+    .eq("attendance_date", attendance_date);
+  if (error) throw error;
+}
+async function fetchLeaveRequests() {
+  const { data, error } = await supa
+    .from("leave_requests")
+    .select("*")
+    .eq("staff_id", PROFILE.id)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+async function createLeaveRequest(payload) {
+  const { data, error } = await supa.from("leave_requests").insert({
+    staff_id: PROFILE.id,
+    leave_type: payload.leave_type,
+    start_date: payload.start_date,
+    end_date: payload.end_date,
+    reason: payload.reason,
+    status: "pending"
+  }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+const routes = {
+  dashboard: renderDashboard,
+  attendance: renderAttendance,
+  leave: renderLeave,
+  notices: renderNotices,
+  profile: renderProfile
+};
+function navigate(route) {
+  if (!PROFILE) return;
+  currentRoute = route in routes ? route : "dashboard";
+  $$("[data-route]").forEach(b => b.classList.toggle("active", b.dataset.route === currentRoute));
+  routes[currentRoute]($("#page"));
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-route]");
+  if (btn && PROFILE) navigate(btn.dataset.route);
+});
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+async function renderDashboard(page) {
+  const today = todayKey();
+  const monthStart = today.slice(0,7) + "-01";
+  const monthEnd = today.slice(0,7) + "-31";
+
+  page.innerHTML = `<div class="empty"><strong>Loading dashboard…</strong></div>`;
+
+  let todayRec = null, monthRows = [];
+  try {
+    [todayRec, monthRows] = await Promise.all([
+      fetchAttendanceToday(),
+      fetchAttendanceRange(monthStart, monthEnd)
+    ]);
+  } catch (err) {
+    console.error(err);
+    page.innerHTML = `<div class="empty"><strong>Could not load data</strong><p>${esc(err.message)}</p></div>`;
+    return;
+  }
+
+  const present = monthRows.filter(r => r.status === "present").length;
+  const late = monthRows.filter(r => r.status === "late").length;
+  const absent = monthRows.filter(r => r.status === "absent").length;
+  const leaves = monthRows.filter(r => r.status === "leave").length;
+
+  const greeting = (() => { const h = new Date().getHours(); return h<12?"Good morning":h<17?"Good afternoon":"Good evening"; })();
+  const heroState = !todayRec ? "idle" : todayRec.check_out_at ? "out" : "in";
+
+  const heroBody = !todayRec
+    ? `<div class="hero-time">Not checked in<small>Tap Check In to start your day.</small></div>
+       <div class="hero-meta"><span>School hours</span><span><strong>10:00 AM</strong> – <strong>4:00 PM</strong></span></div>`
+    : (() => {
+      const dur = todayRec.check_out_at ? minsBetween(todayRec.check_in_at, todayRec.check_out_at) : minsBetween(todayRec.check_in_at);
+      return `<div class="hero-time">${todayRec.check_out_at?`${fmtTime(todayRec.check_in_at)} → ${fmtTime(todayRec.check_out_at)}`:fmtTime(todayRec.check_in_at)}
+        <small>${todayRec.check_out_at?"Working duration: "+fmtDur(dur):"Checked in. Working for "+fmtDur(dur)}</small></div>
+      <div class="hero-meta">
+        <span>In <strong>${fmtTime(todayRec.check_in_at)}</strong></span>
+        <span>Out <strong>${todayRec.check_out_at?fmtTime(todayRec.check_out_at):"—"}</strong></span>
+        <span>Duration <strong>${fmtDur(dur)}</strong></span>
+      </div>`;
+    })();
+
+  const statusPill = !todayRec
+    ? `<span class="status-pill status-pill--idle">Not Checked In</span>`
+    : todayRec.check_out_at
+      ? `<span class="status-pill status-pill--out">Completed</span>`
+      : todayRec.status === "late"
+        ? `<span class="status-pill status-pill--late">Late · In progress</span>`
+        : `<span class="status-pill status-pill--in">Checked in</span>`;
+
+  const primaryLabel = !todayRec ? "Check In" : todayRec.check_out_at ? "Checked Out" : "Check Out";
+
+  page.innerHTML = `
+    <div class="page-head"><div>
+      <h1 class="greeting">${esc(greeting)}, ${esc(PROFILE.full_name.split(" ")[0])}</h1>
+      <p class="date-line">${new Intl.DateTimeFormat("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:TZ}).format(new Date())}</p>
+    </div></div>
+
+    <div class="attendance-hero ${heroState==="out"?"attendance-hero--done":heroState==="idle"?"attendance-hero--idle":""}">
+      <div class="hero-top">
+        <div><div class="hero-label">Today's Attendance</div>${statusPill}</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.7);text-align:right">${today}</div>
+      </div>
+      ${heroBody}
+      <div class="hero-actions">
+        <button id="hero-primary" class="btn btn-primary" type="button" ${todayRec&&todayRec.check_out_at?"disabled":""}>${primaryLabel}</button>
+      </div>
+    </div>
+
+    <div class="section-title"><h3>This Month</h3></div>
+    <div class="grid grid-4">
+      ${statCard('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/>', "Present", present)}
+      ${statCard('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 17l6-6M9 11l6 6"/>', "Absent", absent)}
+      ${statCard('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>', "Late", late)}
+      ${statCard('<path d="M17.8 19.2 16 11l3.5-3.5a2.12 2.12 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8L8 11l-2 2H4l1 3 2-1 2 2v-2l2-2 4.2 3.5a.5.5 0 0 0 .8-.5z"/>', "Approved Leave", leaves)}
+    </div>
+
+    <div class="section-title"><h3>Quick Actions</h3></div>
+    <div class="quick-grid">
+      <button class="quick-action" data-route="attendance" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></svg>
+        <div><strong>My Attendance</strong><span>Calendar & history</span></div>
+      </button>
+      <button class="quick-action" data-route="leave" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+        <div><strong>Apply Leave</strong><span>Submit a request</span></div>
+      </button>
+      <button class="quick-action" data-route="notices" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+        <div><strong>School Notices</strong><span>Latest announcements</span></div>
+      </button>
+      <button class="quick-action" data-route="profile" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22a8 8 0 0 1 16 0"/></svg>
+        <div><strong>My Profile</strong><span>Settings</span></div>
+      </button>
+    </div>
+
+    <div class="section-title">
+      <h3>Latest Notices</h3>
+      <button data-route="notices" type="button">View all</button>
+    </div>
+    <div class="notice-list">
+      ${NOTICES.slice(0,3).map(n => `
+        <button class="notice-item" type="button" data-notice="${esc(n.id)}">
+          <span class="notice-dot"></span>
+          <div style="min-width:0">
+            <div class="notice-title">${esc(n.title)}</div>
+            <div class="notice-meta">${fmtDateTime(n.published_at)}</div>
+            <div class="notice-preview">${esc((n.body||"").replace(/\s+/g," ").slice(0,140))}</div>
+          </div>
+        </button>`).join("") || `<div class="empty"><strong>No notices yet</strong><p>Announcements from the school office will appear here.</p></div>`}
+    </div>
+  `;
+
+  $("#hero-primary").onclick = () => handleHero(todayRec);
+  $$("[data-notice]", page).forEach(b => b.onclick = () => {
+    const n = NOTICES.find(x => x.id === b.dataset.notice);
+    if (n) openNotice(n);
+  });
+}
+
+function statCard(icon, label, value) {
+  return `<div class="stat-card">
+    <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${icon}</svg></div>
+    <div class="stat-value">${value}</div>
+    <div class="stat-label">${esc(label)}</div>
+  </div>`;
+}
+
+async function handleHero(rec) {
+  const btn = $("#hero-primary");
+  btn.disabled = true;
+  const today = todayKey();
+
+  try {
+    if (!rec) {
+      btn.textContent = "Checking in…";
+      const now = new Date();
+      const cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate(), SCHOOL_START_HOUR, 0, 0, 0);
+      const status = now > cutoff ? "late" : "present";
+      await saveCheckIn({
+        attendance_date: today,
+        check_in_at: now.toISOString(),
+        check_out_at: null,
+        status
+      });
+      successOverlay();
+      toast("Checked in successfully.", "success");
+    } else if (!rec.check_out_at) {
+      btn.textContent = "Checking out…";
+      await saveCheckOut(today, new Date().toISOString());
+      successOverlay();
+      toast("Checked out successfully.", "success");
+    }
+    setTimeout(() => renderDashboard($("#page")), 550);
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+    btn.textContent = "Retry";
+    toast("Failed: " + (err.message || "unknown error"), "error");
+  }
+}
+
+/* ============================================================
+   ATTENDANCE
+   ============================================================ */
+async function renderAttendance(page) {
+  const today = todayKey();
+  const monthStart = dateKey(new Date(attView.getFullYear(), attView.getMonth(), 1));
+  const monthEnd = dateKey(new Date(attView.getFullYear(), attView.getMonth()+1, 0));
+
+  page.innerHTML = `<div class="empty"><strong>Loading attendance…</strong></div>`;
+  let monthRows = [];
+  try {
+    monthRows = await fetchAttendanceRange(monthStart, monthEnd);
+  } catch (err) {
+    console.error(err);
+    page.innerHTML = `<div class="empty"><strong>Could not load attendance</strong><p>${esc(err.message)}</p></div>`;
+    return;
+  }
+
+  const map = new Map(monthRows.map(r => [r.attendance_date, r]));
+  const year = attView.getFullYear(), month = attView.getMonth();
+  const startWd = new Date(year, month, 1).getDay();
+  const total = new Date(year, month+1, 0).getDate();
+  const dows = ["S","M","T","W","T","F","S"];
+
+  let cells = dows.map(d => `<div class="cal-dow">${d}</div>`);
+  for (let i=0;i<startWd;i++) cells.push(`<div class="cal-day is-outside"></div>`);
+  for (let d=1;d<=total;d++) {
+    const date = new Date(year, month, d);
+    const key = dateKey(date);
+    const isSun = date.getDay() === 0;
+    const isFuture = key > today;
+    const rec = map.get(key);
+    let cls = "cal-day";
+    if (isSun) cls += " is-sunday";
+    if (isFuture) cls += " is-future";
+    if (key === today) cls += " is-today";
+    if (rec?.status === "present") cls += " present";
+    if (rec?.status === "late") cls += " late";
+    if (rec?.status === "leave") cls += " leave";
+    const lbl = rec ? ({present:"P",late:"L",leave:"LV",absent:"A"}[rec.status]||"") : "";
+    cells.push(`<div class="${cls}" ${rec?`data-att="${key}" style="cursor:pointer"`:""}><span>${d}</span>${lbl?`<small>${lbl}</small>`:""}</div>`);
+  }
+
+  const listRows = [...monthRows].sort((a,b) => b.attendance_date.localeCompare(a.attendance_date));
+  const listHtml = listRows.length ? `<div class="list">${listRows.map(r => {
+    const dur = r.check_out_at ? minsBetween(r.check_in_at, r.check_out_at) : (r.check_in_at ? minsBetween(r.check_in_at) : 0);
+    const badge = r.status === "present" ? `<span class="badge badge-present">Present</span>`
+      : r.status === "late" ? `<span class="badge badge-late">Late</span>`
+      : r.status === "leave" ? `<span class="badge badge-leave">Leave</span>`
+      : `<span class="badge badge-rejected">${esc(r.status)}</span>`;
+    return `<div class="list-row">
+      <div class="list-main"><strong>${fmtDate(r.attendance_date)} ${badge}</strong>
+        <span>In ${fmtTime(r.check_in_at)} · Out ${r.check_out_at?fmtTime(r.check_out_at):"—"}</span></div>
+      <div class="list-side"><strong>${dur?fmtDur(dur):"—"}</strong></div>
+    </div>`;
+  }).join("")}</div>` : `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><strong>No records this month</strong><p>Check-in and check-out entries will appear here.</p></div>`;
+
+  page.innerHTML = `
+    <div class="page-head"><div><h1 class="greeting">My Attendance</h1>
+      <p class="date-line">Your attendance history from the school register.</p></div></div>
+
+    <div class="card calendar-card">
+      <div class="cal-head">
+        <h3>${new Intl.DateTimeFormat("en-IN",{month:"long",year:"numeric"}).format(attView)}</h3>
+        <div class="cal-nav">
+          <button id="cal-prev" type="button" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+          <button id="cal-next" type="button" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      <div class="cal-grid">${cells.join("")}</div>
+      <div class="cal-legend">
+        <span><i class="legend-present"></i>Present</span>
+        <span><i class="legend-late"></i>Late</span>
+        <span><i class="legend-leave"></i>Leave</span>
+      </div>
+    </div>
+
+    <div class="section-title"><h3>Records</h3></div>
+    ${listHtml}
+  `;
+
+  $("#cal-prev").onclick = () => { attView = new Date(attView.getFullYear(), attView.getMonth()-1, 1); renderAttendance(page); };
+  $("#cal-next").onclick = () => { attView = new Date(attView.getFullYear(), attView.getMonth()+1, 1); renderAttendance(page); };
+  $$("[data-att]", page).forEach(el => el.onclick = () => {
+    const r = map.get(el.dataset.att);
+    if (r) showAttDetail(r);
+  });
+}
+
+function showAttDetail(r) {
+  const dur = r.check_out_at ? minsBetween(r.check_in_at, r.check_out_at) : (r.check_in_at ? minsBetween(r.check_in_at) : 0);
+  openModal("Attendance Detail", `
+    <div class="detail-grid">
+      <div class="detail-item"><span>Date</span><strong>${fmtDate(r.attendance_date)}</strong></div>
+      <div class="detail-item"><span>Status</span><strong style="text-transform:capitalize">${esc(r.status)}</strong></div>
+      <div class="detail-item"><span>Check In</span><strong>${fmtTime(r.check_in_at)}</strong></div>
+      <div class="detail-item"><span>Check Out</span><strong>${r.check_out_at?fmtTime(r.check_out_at):"—"}</strong></div>
+      <div class="detail-item"><span>Duration</span><strong>${dur?fmtDur(dur):"—"}</strong></div>
+    </div>`);
+}
+
+/* ============================================================
+   LEAVE
+   ============================================================ */
+async function renderLeave(page) {
+  page.innerHTML = `<div class="empty"><strong>Loading leave requests…</strong></div>`;
+  let reqs = [];
+  try {
+    reqs = await fetchLeaveRequests();
+  } catch (err) {
+    console.error(err);
+    page.innerHTML = `<div class="empty"><strong>Could not load leave requests</strong><p>${esc(err.message)}</p></div>`;
+    return;
+  }
+
+  page.innerHTML = `
+    <div class="page-head"><div><h1 class="greeting">Leave</h1>
+      <p class="date-line">Submit a request and track its status.</p></div>
+      <button id="new-leave" class="btn btn-primary btn-sm" type="button">+ New Request</button>
+    </div>
+    <div id="leave-list">${reqs.length ? `<div class="list">${reqs.map(leaveRow).join("")}</div>`
+      : `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><strong>No leave requests</strong><p>Tap "+ New Request" to submit your first leave request.</p></div>`}</div>
+  `;
+  $("#new-leave").onclick = openLeaveForm;
+}
+
+function leaveRow(r) {
+  const badge = r.status === "approved" ? `<span class="badge badge-approved">Approved</span>`
+    : r.status === "rejected" ? `<span class="badge badge-rejected">Rejected</span>`
+    : `<span class="badge badge-pending">Pending</span>`;
+  return `<div class="list-row">
+    <div class="list-main">
+      <strong style="text-transform:capitalize">${esc(r.leave_type)} Leave ${badge}</strong>
+      <span>${fmtDate(r.start_date)} → ${fmtDate(r.end_date)}</span>
+      <span class="small" style="margin-top:4px">${esc(r.reason)}</span>
+      ${r.admin_remarks?`<span class="small" style="color:var(--navy-600);margin-top:4px"><strong>Remarks:</strong> ${esc(r.admin_remarks)}</span>`:""}
+    </div>
+  </div>`;
+}
+
+function openLeaveForm() {
+  openModal("New Leave Request", `
+    <form id="leave-form">
+      <div class="field"><label for="lv-type">Leave type</label>
+        <select id="lv-type">
+          <option value="casual">Casual Leave</option>
+          <option value="sick">Sick Leave</option>
+          <option value="earned">Earned Leave</option>
+          <option value="maternity">Maternity Leave</option>
+          <option value="compassionate">Compassionate Leave</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="lv-start">Start date</label><input id="lv-start" type="date" /></div>
+        <div class="field"><label for="lv-end">End date</label><input id="lv-end" type="date" /></div>
+      </div>
+      <div class="field"><label for="lv-reason">Reason</label>
+        <textarea id="lv-reason" placeholder="Brief reason for leave" maxlength="500"></textarea>
+        <div class="field-hint">Maximum 500 characters.</div>
+      </div>
+      <div id="lv-error" class="form-error" hidden></div>
+    </form>`,
+    `<button class="btn btn-ghost" type="button" data-cancel>Cancel</button>
+     <button class="btn btn-primary" type="submit" form="leave-form">Submit Request</button>`,
+    (root, close) => {
+      root.querySelector("[data-cancel]").onclick = close;
+      const form = root.querySelector("#leave-form");
+      const start = root.querySelector("#lv-start"), end = root.querySelector("#lv-end");
+      const today = todayKey();
+      start.min = today; end.min = today;
+      start.addEventListener("change", () => { end.min = start.value || today; if (end.value && end.value < start.value) end.value = start.value; });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const err = root.querySelector("#lv-error"); err.hidden = true;
+        const type = root.querySelector("#lv-type").value;
+        const s = start.value, en = end.value;
+        const reason = root.querySelector("#lv-reason").value.trim();
+        if (!s || !en || !reason) { err.textContent = "Please fill all fields."; err.hidden = false; return; }
+        if (en < s) { err.textContent = "End date cannot be earlier than start date."; err.hidden = false; return; }
+
+        const btn = root.querySelector('button[type="submit"]');
+        btn.disabled = true; btn.textContent = "Submitting…";
+        try {
+          await createLeaveRequest({ leave_type: type, start_date: s, end_date: en, reason });
+          close();
+          toast("Leave request submitted.", "success");
+          renderLeave($("#page"));
+        } catch (e2) {
+          console.error(e2);
+          err.textContent = "Submission failed: " + (e2.message || "unknown error");
+          err.hidden = false;
+          btn.disabled = false; btn.textContent = "Submit Request";
+        }
+      });
+    });
+}
+
+/* ============================================================
+   NOTICES
+   ============================================================ */
+function renderNotices(page) {
+  page.innerHTML = `
+    <div class="page-head"><div><h1 class="greeting">School Notices</h1>
+      <p class="date-line">Announcements published by the school office.</p></div></div>
+    <div id="notices-root"></div>
+  `;
+  paintNotices(NOTICES);
+
+  function paintNotices(list) {
+    const root = $("#notices-root");
+    if (!list.length) { root.innerHTML = `<div class="empty"><strong>No notices</strong><p>Check back later.</p></div>`; return; }
+    root.innerHTML = `<div class="notice-list">${list.map(n => `
+      <button class="notice-item" type="button" data-notice="${esc(n.id)}">
+        <span class="notice-dot"></span>
+        <div style="min-width:0">
+          <div class="notice-title">${esc(n.title)}</div>
+          <div class="notice-meta">${fmtDateTime(n.published_at)}</div>
+          <div class="notice-preview">${esc((n.body||"").replace(/\s+/g," ").slice(0,180))}</div>
+        </div>
+      </button>`).join("")}</div>`;
+    $$("[data-notice]", root).forEach(b => b.onclick = () => {
+      const n = list.find(x => x.id === b.dataset.notice);
+      if (n) openNotice(n);
+    });
+  }
+}
+
+function openNotice(n) {
+  openModal(n.title, `
+    <p class="small muted" style="margin-bottom:12px">${fmtDateTime(n.published_at)}</p>
+    <p style="white-space:pre-wrap;line-height:1.6">${esc(n.body)}</p>`);
+}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+function renderProfile(page) {
+  const theme = currentTheme();
+  const initialsStr = initials(PROFILE.full_name);
+
+  page.innerHTML = `
+    <div class="page-head"><div><h1 class="greeting">My Profile</h1>
+      <p class="date-line">Staff account details and settings.</p></div></div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="profile-hero">
+        <div class="profile-avatar">${esc(initialsStr)}</div>
+        <div style="min-width:0">
+          <h2>${esc(PROFILE.full_name)}</h2>
+          <p>${esc(PROFILE.designation || "Staff")}${PROFILE.department?" · "+esc(PROFILE.department):""}</p>
+          <p class="small muted" style="margin-top:4px">${esc(PROFILE.official_email)}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title"><h3>Details</h3></div>
+    <div class="detail-grid">
+      <div class="detail-item"><span>Employee ID</span><strong>${esc(PROFILE.employee_code || "—")}</strong></div>
+      <div class="detail-item"><span>Role</span><strong style="text-transform:capitalize">${esc(PROFILE.role || "staff")}</strong></div>
+      <div class="detail-item"><span>Department</span><strong>${esc(PROFILE.department || "—")}</strong></div>
+      <div class="detail-item"><span>Designation</span><strong>${esc(PROFILE.designation || "—")}</strong></div>
+      <div class="detail-item"><span>Official Email</span><strong>${esc(PROFILE.official_email)}</strong></div>
+      <div class="detail-item"><span>Phone</span><strong>${esc(PROFILE.phone || "—")}</strong></div>
+      <div class="detail-item"><span>Joining Date</span><strong>${fmtDate(PROFILE.joining_date)}</strong></div>
+      <div class="detail-item"><span>School</span><strong>${esc(PROFILE.institution_name || "PM SHRI Mahatma Gandhi Government School, Baya")}</strong></div>
+    </div>
+
+    <div class="section-title"><h3>Settings</h3></div>
+    <div class="card" style="padding:0 18px">
+      <div class="toggle-row">
+        <div><strong>Dark mode</strong><span>Use a dark theme for the app.</span></div>
+        <button id="theme-switch" class="switch ${theme==="dark"?"on":""}" type="button" aria-label="Toggle dark mode"></button>
+      </div>
+      <div class="toggle-row">
+        <div><strong>Notifications</strong><span>Push notifications will arrive in a future release.</span></div>
+        <button class="switch" type="button" disabled aria-label="Coming soon"></button>
+      </div>
+      <div class="toggle-row">
+        <div><strong>Sign out</strong><span>Sign out of this device.</span></div>
+        <button id="profile-logout" class="btn btn-danger btn-sm" type="button">Sign out</button>
+      </div>
+    </div>
+
+    <p class="small muted center" style="margin-top:20px">
+      Signed in · ${esc(PROFILE.official_email)}
+    </p>
+  `;
+
+  $("#theme-switch").onclick = e => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    applyTheme(next);
+    e.currentTarget.classList.toggle("on", next === "dark");
+    toast(next === "dark" ? "Dark mode on." : "Light mode on.", "info");
+  };
+  $("#profile-logout").onclick = doSignOut;
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+$("#header-date").textContent = new Intl.DateTimeFormat("en-IN",{weekday:"short",day:"numeric",month:"short",timeZone:TZ}).format(new Date());
+$("#avatar-btn").onclick = () => { if (PROFILE) navigate("profile"); };
+$("#notif-btn").onclick = () => { if (PROFILE) navigate("notices"); };
+$("#tab-signin").onclick = () => setAuthMode("signin");
+$("#tab-signup").onclick = () => setAuthMode("signup");
+$("#switch-action").onclick = () => setAuthMode(authMode === "signin" ? "signup" : "signin");
+$("#auth-form").addEventListener("submit", handleAuthSubmit);
+$("#logout-btn").onclick = doSignOut;
+
+setAuthMode("signin");
+
+(async () => {
+  const { data: { session } } = await supa.auth.getSession();
+  await bootFromSession(session);
+})();
+
+supa.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT" || event === "USER_UPDATED" || event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+    setTimeout(() => { bootFromSession(session); }, 0);
+  }
+});
+</script>
+</body>
+</html>
